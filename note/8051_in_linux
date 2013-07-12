@@ -1,0 +1,4 @@
+1. download SDCC compiler, install it by INSTALL.txt
+2. emerge avrdude or apt-get install avrdude
+3. update avrdude.conf which contains 89S51/89S52/89S53 flash desc
+ # cp avrdude.conf /etc/
