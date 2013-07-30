@@ -9,4 +9,7 @@ typedef unsigned short u16;
 typedef unsigned long u32;
 typedef u8 bool;
 
+#define true 1
+#define false 0
+
 #endif

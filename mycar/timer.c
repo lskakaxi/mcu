@@ -188,21 +188,25 @@ u16 stop_counter(u8 timer)
 
 void timer0_isr(void) __interrupt (1) __using (1)
 {
-#ifdef TIMER0_CB_HOOK
-	TIMER0_CB_HOOK;
-#endif
+	/* enable timer0 firstly */
 	TR0 = 0;
 	set_timer(0, timer0_value);
 	TR0 = 1;
+	/* add hook time consume in this timer period */
+#ifdef TIMER0_CB_HOOK
+	TIMER0_CB_HOOK;
+#endif
 }
 
 void timer1_isr(void) __interrupt (3) __using (2)
 {
-#ifdef TIMER1_CB_HOOK
-	TIMER1_CB_HOOK;
-#endif
+	/* enable timer1 firstly */
 	TR1 = 0;
 	set_timer(1, timer1_value);
 	TR1 = 1;
+	/* add hook time consume in this timer period */
+#ifdef TIMER1_CB_HOOK
+	TIMER1_CB_HOOK;
+#endif
 }
 

@@ -1,16 +1,14 @@
 #include "mycar.h"
+#include "work.h"
 
-u32 jiffies, wake_jiffies;
+u32 jiffies, wake_jiffies = -1;
 static void schedule(void);
 void tick(void)
 {
-	s8 i = sizeof(work_tbl)/sizeof(struct worker_tbl) - 1;
-	s8 n;
-	u32 next_timing = 0;
-
 	kick_wdt();
 	jiffies++;
 	schedule();
+	P1_7 = !P1_7;
 }
 
 void setup_tick_timer(void)
@@ -20,28 +18,41 @@ void setup_tick_timer(void)
 	start_timer(0);
 }
 
+s8 last_worker;
 static void schedule(void)
 {
-	disable_irq();
+	s8 i = worker_num - 1;
+	u32 next_timing = 0;
+	const struct worker_entry *w_entry;
 
-	for (; i >= 0; i--) {
+	/* NOTICE: we already in irq, no disable_irq needed */
+	for ( ; i >= 0; i--) {
+		w_entry = &work_tbl[i];
 		/* woker has delay of beginning */
-		if (jiffies < work_tbl[i].delay)
-				next_timing = work_tbl[i].delay;
-		else if (work_tbl[i].repeat)
-			next_timing = jiffies + work_tbl[i].timing -
-				((jiffies - work_tbl[i].delay) % work_tbl[i].timing);
+		if (jiffies < w_entry->delay)
+			next_timing = w_entry->delay;
+		else if (w_entry->repeat)
+			next_timing = jiffies + w_entry->timing -
+				((jiffies - w_entry->delay) % w_entry->timing);
 		else /* overrun the delay and no repeat */
 			continue;
 
 		if (wake_jiffies > next_timing) {
 			wake_jiffies = next_timing;
-			n = i;
+			last_worker = i;
 		}
 	}
 
-	if (wake_jiffies == jiffies)
-		workqueue_add(work_tbl[n].w);
+	if (wake_jiffies == jiffies) {
+		workqueue_add(last_worker);
+		/* need re-calc wake_jiffies */
+		wake_jiffies = -1;
+	}
 
-	enable_irq();
+	pm_idle(wake_jiffies - jiffies);
+}
+
+void pm_idle(u8 sleep_tick)
+{
+	sleep_tick = sleep_tick;
 }

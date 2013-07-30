@@ -20,14 +20,4 @@ int main(void)
 	return 0;
 }
 
-void led_high_worker(void)
-{
-	P1_2 = 1;
-	mdelay(500);
-}
 
-void led_low_worker(void)
-{
-	P1_2 = 0;
-	mdelay(500);
-}
