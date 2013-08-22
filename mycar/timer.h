@@ -26,13 +26,14 @@
 #define T1_MASK         0xF0
 #endif
 
-#define OSC 11052000
+//#define OSC 11052000
 #ifndef OSC
 # define OSC 12000000
 #endif
 
 #define CLOCK (1.0f/(OSC/12.0f))
 #define MS_CLOCK ((u32)((1.0f/1000.0f)/CLOCK+0.5))
+#define TEN_MS_CLOCK ((u32)((10.0f/1000.0f)/CLOCK+0.5))
 #define MODE0_MAX_MS (0x1fff/MS_CLOCK)
 #define MODE1_MAX_MS (0xffff/MS_CLOCK)
 #define MODE2_MAX_MS (0xff/MS_CLOCK)

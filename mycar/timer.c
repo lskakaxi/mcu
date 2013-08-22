@@ -187,9 +187,9 @@ u16 stop_counter(u8 timer)
 }
 
 #ifdef _KEIL_C_
-void timer0_isr(void) interrupt 1 using 1
+void timer0_isr(void) interrupt 1
 #else
-void timer0_isr(void) __interrupt (1) __using (1)
+void timer0_isr(void) __interrupt (1)
 #endif
 {
 	/* enable timer0 firstly */

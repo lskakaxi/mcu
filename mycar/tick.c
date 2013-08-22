@@ -1,55 +1,56 @@
 #include "mycar.h"
 #include "work.h"
 
-u32 jiffies, wake_jiffies = -1;
+u32 jiffies;
+u8 expire_interval[WORK_MAX];
+u8 expire_times[WORK_MAX];
+#ifdef _KEIL_C_
+bit first_time = 1;
+#else
+__sbit first_time = 1;
+#endif
+
 static void schedule(void);
 void tick(void)
 {
-	kick_wdt();
+	P1_7 = !P1_7;
 	jiffies++;
 	schedule();
-	P1_7 = !P1_7;
 }
 
 void setup_tick_timer(void)
 {
 	init_timer(0, MODE1_16b, CTL_SW, OP_CLOCK);
-	set_timer(0, 0xffff - MS_CLOCK);
+	set_timer(0, 0xffff - TEN_MS_CLOCK);
 	start_timer(0);
 }
 
-s8 last_worker;
 static void schedule(void)
 {
-	s8 i = worker_num - 1;
-	u32 next_timing = 0;
-	const struct worker_entry *w_entry;
-
-	/* NOTICE: we already in irq, no disable_irq needed */
-	for ( ; i >= 0; i--) {
-		w_entry = &work_tbl[i];
-		/* woker has delay of beginning */
-		if (jiffies < w_entry->delay)
-			next_timing = w_entry->delay;
-		else if (w_entry->repeat)
-			next_timing = jiffies + w_entry->timing -
-				((jiffies - w_entry->delay) % w_entry->timing);
-		else /* overrun the delay and no repeat */
-			continue;
-
-		if (wake_jiffies > next_timing) {
-			wake_jiffies = next_timing;
-			last_worker = i;
+	int i;
+	if (first_time) {
+		for (i = 0; i < worker_num; i++) {
+			expire_interval[i] = work_tbl[i].delay;
+			expire_times[i] = 1;
+			if (!expire_interval[i]) {
+				expire_interval[i] = work_tbl[i].interval;
+				expire_times[i] = work_tbl[i].times;
+			}
+		}
+		first_time = 0;
+	} else {
+		for (i = 0; i < worker_num; i++) {
+			if (expire_interval[i] == 1 && expire_times[i] == 1) {
+				workqueue_add(i);
+				expire_interval[i] = work_tbl[i].interval;
+				expire_times[i] = work_tbl[i].times;
+			} else if (!expire_interval[i]) {
+				expire_times[i]--;
+				expire_interval[i] = work_tbl[i].interval;
+			} else
+				expire_interval[i]--;
 		}
 	}
-
-	if (wake_jiffies == jiffies) {
-		workqueue_add(last_worker);
-		/* need re-calc wake_jiffies */
-		wake_jiffies = -1;
-	}
-
-	pm_idle(wake_jiffies - jiffies);
 }
 
 void pm_idle(u8 sleep_tick)

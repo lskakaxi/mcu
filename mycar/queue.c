@@ -64,5 +64,6 @@ void workqueue_run(void)
 {
 	while (1) {
 		workqueue_run_one();
+		kick_wdt();
 	}
 }

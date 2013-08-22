@@ -3,7 +3,6 @@
 #include "typedef.h"
 
 extern u32 jiffies;
-extern u32 wake_jiffies;
 
 void tick(void);
 void setup_tick_timer(void);
