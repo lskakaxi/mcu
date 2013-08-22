@@ -1,2 +1,9 @@
 out
 tags
+*.LST
+*.OBJ
+*.obj
+*.M51
+*.hex
+*.lnp
+*.plg
