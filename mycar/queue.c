@@ -37,26 +37,26 @@ void workqueue_add(u8 w)
 	}
 	workqueue[in_index] = w;
 ret:
+	return;
 }
 
 void workqueue_run_one(void)
 {
+#ifdef _KEIL_C_
+	bit int_flag;
+#else
 	__sbit int_flag;
+#endif
 	u8 out_index = wq_index.out;
 	u8 w = workqueue[out_index];
 	worker fn = work_tbl[w].w;
 
 	if (w != 0xff) {
-		if (out_index == 4)
-			P1_6 = 0;
-
 		irq_save(int_flag);
 		workqueue[out_index] = 0xff;
 		wq_index.out = out_index + 1;
 		irq_restore(int_flag);
 		fn();
-		if (out_index == 4)
-			P1_5 = 0;
 	}
 }
 

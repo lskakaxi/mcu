@@ -186,7 +186,11 @@ u16 stop_counter(u8 timer)
 	return stop_timer(timer);
 }
 
+#ifdef _KEIL_C_
+void timer0_isr(void) interrupt 1 using 1
+#else
 void timer0_isr(void) __interrupt (1) __using (1)
+#endif
 {
 	/* enable timer0 firstly */
 	TR0 = 0;
@@ -198,7 +202,11 @@ void timer0_isr(void) __interrupt (1) __using (1)
 #endif
 }
 
+#ifdef _KEIL_C_
+void timer1_isr(void) interrupt 3 using 2
+#else
 void timer1_isr(void) __interrupt (3) __using (2)
+#endif
 {
 	/* enable timer1 firstly */
 	TR1 = 0;

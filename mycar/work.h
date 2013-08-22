@@ -11,6 +11,7 @@ struct worker_entry {
 	bool repeat;
 };
 
-extern __code struct worker_entry work_tbl[];
-extern __code u8 worker_num;
+DECLARE_CODE_VAR(struct worker_entry, work_tbl[]);
+DECLARE_CODE_VAR(u8, worker_num);
+
 #endif

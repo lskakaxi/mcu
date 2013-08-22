@@ -1,0 +1,94 @@
+C51 COMPILER V9.52.0.0   QUEUE                                                             08/22/2013 07:41:16 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE QUEUE
+OBJECT MODULE PLACED IN .\queue.obj
+COMPILER INVOKED BY: E:\work\tools\Keil\C51\BIN\C51.EXE ..\queue.c ROM(COMPACT) BROWSE DEFINE(_KEIL_C_) DEBUG OBJECTEXTE
+                    -ND TABS(2) OBJECT(.\queue.obj)
+
+line level    source
+
+   1          #include "mycar.h"
+   2          #include "queue.h"
+   3          #include "work.h"
+   4          
+   5          u8 workqueue[QUEUELEN];
+   6          /* 0 ~ 2 bit: in queue index
+   7           * 3 ~ 5 bit: out queue index
+   8           * limit to 8 worker
+   9           */
+  10          struct {
+  11            u8 in:3;
+  12            u8 unused:1;
+  13            u8 out:3;
+  14          } wq_index;
+  15          
+  16          void workqueue_init(void)
+  17          {
+  18   1        u8 i;
+  19   1        for (i = 0; i < QUEUELEN; i++)
+  20   1          workqueue[i] = 0xff;
+  21   1        wq_index.in = 0x7;
+  22   1        wq_index.out = 0;
+  23   1      }
+  24          
+  25          void workqueue_add(u8 w)
+  26          {
+  27   1        u8 in_index, out_index;
+  28   1      
+  29   1        wq_index.in++;
+  30   1        in_index = wq_index.in;
+  31   1        out_index = wq_index.out;
+  32   1        if ((in_index == out_index) &&
+  33   1          workqueue[out_index] != 0xff) {
+  34   2          wq_index.in = in_index - 1;
+  35   2          /* if queue is full, just ignore new worker */
+  36   2          goto ret;
+  37   2        }
+  38   1        workqueue[in_index] = w;
+  39   1      ret:
+  40   1        return;
+  41   1      }
+  42          
+  43          void workqueue_run_one(void)
+  44          {
+  45   1      #ifdef _KEIL_C_
+  46   1        bit int_flag;
+  47   1      #else
+                __sbit int_flag;
+              #endif
+  50   1        u8 out_index = wq_index.out;
+  51   1        u8 w = workqueue[out_index];
+  52   1        worker fn = work_tbl[w].w;
+  53   1      
+  54   1        if (w != 0xff) {
+C51 COMPILER V9.52.0.0   QUEUE                                                             08/22/2013 07:41:16 PAGE 2   
+
+  55   2          irq_save(int_flag);
+  56   2          workqueue[out_index] = 0xff;
+  57   2          wq_index.out = out_index + 1;
+  58   2          irq_restore(int_flag);
+  59   2          fn();
+  60   2        }
+  61   1      }
+  62          
+  63          void workqueue_run(void)
+  64          {
+  65   1        while (1) {
+  66   2          workqueue_run_one();
+  67   2        }
+  68   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    145    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

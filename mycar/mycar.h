@@ -1,4 +1,8 @@
-#include <8052.h>
+#ifdef _KEIL_C_
+# include <REGX51.H>
+#else
+# include <8052.h>
+#endif
 
 /* interrupt */
 #define disable_irq() EA=0

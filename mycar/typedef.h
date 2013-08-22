@@ -12,4 +12,10 @@ typedef u8 bool;
 #define true 1
 #define false 0
 
+#define DEFINE_CODE_VAR(type,name)	\
+	type code name 
+	
+#define DECLARE_CODE_VAR(type,name)	\
+	extern type code name 
+
 #endif

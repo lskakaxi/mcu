@@ -1,0 +1,47 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              08/22/2013 07:41:16 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\main.obj
+COMPILER INVOKED BY: E:\work\tools\Keil\C51\BIN\C51.EXE ..\main.c ROM(COMPACT) BROWSE DEFINE(_KEIL_C_) DEBUG OBJECTEXTEN
+                    -D TABS(2) OBJECT(.\main.obj)
+
+line level    source
+
+   1          #include "mycar.h"
+   2          
+   3          /* interrupt vector */
+   4          #ifndef _KEIL_C_
+              void timer0_isr(void) __interrupt (1) __using (1);
+              void timer1_isr(void) __interrupt (3) __using (2);
+              #endif
+   8          
+   9          int main(void)
+  10          {
+  11   1        disable_irq();
+  12   1        wdt_init();
+  13   1        workqueue_init();
+  14   1        enable_irq();
+  15   1        setup_tick_timer();
+  16   1      
+  17   1        /* loop here */
+  18   1        workqueue_run();
+  19   1      
+  20   1        return 0;
+  21   1      }
+  22          
+  23          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     20    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

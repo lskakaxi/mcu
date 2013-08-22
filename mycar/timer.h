@@ -2,6 +2,30 @@
 #define _TIMER_H
 #include "typedef.h" 
 
+/* align against SDCC */
+#ifdef _KEIL_C_
+/* BIT definitions for bits that are not directly accessible */
+/* PCON bits */
+#define IDL             0x01
+#define PD              0x02
+#define GF0             0x04
+#define GF1             0x08
+#define SMOD            0x80
+
+/* TMOD bits */
+#define T0_M0           0x01
+#define T0_M1           0x02
+#define T0_CT           0x04
+#define T0_GATE         0x08
+#define T1_M0           0x10
+#define T1_M1           0x20
+#define T1_CT           0x40
+#define T1_GATE         0x80
+
+#define T0_MASK         0x0F
+#define T1_MASK         0xF0
+#endif
+
 #define OSC 11052000
 #ifndef OSC
 # define OSC 12000000

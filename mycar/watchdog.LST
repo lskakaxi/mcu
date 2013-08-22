@@ -1,0 +1,42 @@
+C51 COMPILER V9.52.0.0   WATCHDOG                                                          08/22/2013 07:41:16 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE WATCHDOG
+OBJECT MODULE PLACED IN .\watchdog.obj
+COMPILER INVOKED BY: E:\work\tools\Keil\C51\BIN\C51.EXE ..\watchdog.c ROM(COMPACT) BROWSE DEFINE(_KEIL_C_) DEBUG OBJECTE
+                    -XTEND TABS(2) OBJECT(.\watchdog.obj)
+
+line level    source
+
+   1          #include "mycar.h"
+   2          
+   3          #ifdef _KEIL_C_
+   4          sfr WDTRST  = 0xa6;
+   5          #else
+              __sfr __at 0xa6 WDTRST;
+              #endif
+   8          
+   9          void kick_wdt(void)
+  10          {
+  11   1        WDTRST = 0x1e;
+  12   1        WDTRST = 0xe1;
+  13   1      }
+  14          
+  15          void wdt_init(void)
+  16          {
+  17   1        kick_wdt();
+  18   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     10    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
