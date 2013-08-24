@@ -18,6 +18,15 @@ void tick(void)
 	schedule();
 }
 
+u32 cpu_clock(void)
+{
+	u32 jiff;
+	ET0 = 0;
+	jiff = jiffies;
+	ET0 = 1;
+	return jiff;
+}
+
 void setup_tick_timer(void)
 {
 	init_timer(0, MODE1_16b, CTL_SW, OP_CLOCK);

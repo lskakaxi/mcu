@@ -1,14 +1,17 @@
 #include "work.h"
 #include "mycar.h"
+#include <stdio.h>
 
 void led_high_worker(void)
 {
 	P1_2 = 1;
+	printf("high\r\n");
 }
 
 void led_low_worker(void)
 {
 	P1_2 = 0;
+	printf("low\n\r");
 }
 
 DEFINE_CODE_VAR(struct worker_entry, work_tbl[]) = {

@@ -1,5 +1,5 @@
 #ifdef _KEIL_C_
-# include <REGX51.H>
+# include <REGX52.H>
 #else
 # include <8052.h>
 #endif
@@ -15,6 +15,9 @@
 
 /* tick */
 #include "tick.h"
+
+/* uart */
+#include "uart.h"
 
 /* wdt */
 void kick_wdt(void);

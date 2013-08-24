@@ -26,7 +26,7 @@
 #define T1_MASK         0xF0
 #endif
 
-//#define OSC 11052000
+#define OSC 11059000
 #ifndef OSC
 # define OSC 12000000
 #endif
