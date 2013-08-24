@@ -1,5 +1,4 @@
 #include "mycar.h"
-#include <stdio.h>
 
 /* interrupt vector */
 #ifndef _KEIL_C_
@@ -9,17 +8,16 @@ void timer1_isr(void) __interrupt (3) __using (2);
 
 int main(void)
 {
-	disable_irq();
-	wdt_init();
-	workqueue_init();
-	enable_irq();
-	setup_tick_timer();
-	uart_init();
+    uart_init();
+    disable_irq();
+    wdt_init();
+    workqueue_init();
+    enable_irq();
+    setup_tick_timer();
 
-	/* loop here */
-	workqueue_run();
+    P1 = 0x55;
+    /* loop here */
+    workqueue_run();
 
-	return 0;
+    return 0;
 }
-
-

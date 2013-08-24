@@ -6,11 +6,11 @@
 typedef void (*worker)(void);
 
 struct worker_entry {
-	worker w;		/* callback */
-	u8 delay;		/* delay at beginning */
-	u8 interval;/* timeing = interval * times */
-	u8 times;
-	bool repeat;/* once or repeat */
+    worker w;		/* callback */
+    u8 delay;		/* delay at beginning */
+    u8 interval;/* timeing = interval * times */
+    u8 times;
+    bool repeat;/* once or repeat */
 };
 
 DECLARE_CODE_VAR(struct worker_entry, work_tbl[]);
