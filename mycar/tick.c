@@ -32,12 +32,8 @@ void setup_tick_timer(void)
 
 static void schedule(void)
 {
-    int i;
-    int a;
-    int b;
+    u8 i;
     if (first_time) {
-        printf("first_time = %d\r\n", first_time);
-        printf("other ... \r\n");
         for (i = 0; i < worker_num; i++) {
             expire_interval[i] = work_tbl[i].delay;
             expire_times[i] = 1;
@@ -49,15 +45,7 @@ static void schedule(void)
         first_time = 0;
     } else {
         for (i = 0; i < worker_num; i++) {
-            a = expire_interval[i];
-            b = expire_times[i];
-            printf("123456789012345678901234567890\r\n");
-            printf("%d\r\n", i);
-            printf("interval[%d]\r\n", a);
-            printf("times[%d]\r\n", b);
-            printf("\r\n");
             if (expire_interval[i] == 1 && expire_times[i] == 1) {
-                printf("workqueue_add...\r\n");
                 workqueue_add(i);
                 expire_interval[i] = work_tbl[i].interval;
                 expire_times[i] = work_tbl[i].times;
