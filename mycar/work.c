@@ -14,6 +14,8 @@ void led_low_worker(void)
 void log(void)
 {
     printf("os time:%ld\r\n", cpu_clock());
+    printf("accel xout: %d\r\n", mpu6050_get_data(0x3B));
+    printf("gyro xout: %d\r\n", mpu6050_get_data(0x43));
 }
 
 DEFINE_CODE_VAR(struct worker_entry, work_tbl[]) = {

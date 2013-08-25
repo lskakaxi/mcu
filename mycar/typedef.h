@@ -13,6 +13,7 @@ typedef u8 bool;
 #define false 0
 
 #ifdef _KEIL_C_
+/* for Keil C */
 #define DEFINE_CODE_VAR(type,name)	\
 	type code name 
 #define DECLARE_CODE_VAR(type,name)	\
@@ -23,6 +24,8 @@ typedef u8 bool;
 #define DECLARE_BIT_VAR(name)	\
 	extern bit name 
 
+#include <intrins.h>
+#define NOP() _nop_()
 #else
 /* for sdcc */
 #define DEFINE_CODE_VAR(type,name)	\
@@ -34,6 +37,8 @@ typedef u8 bool;
 	 __bit name 
 #define DECLARE_BIT_VAR(name)	\
 	extern __bit name 
+
+#define NOP() __asm nop __endasm
 #endif
 
 #endif
