@@ -14,6 +14,7 @@ int main(void)
     workqueue_init();
     enable_irq();
     setup_tick_timer();
+    init_mpu6050();
 
     P1 = 0x55;
     /* loop here */

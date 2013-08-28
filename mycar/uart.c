@@ -24,6 +24,7 @@ void uart_init(void)
 
 #ifndef _KEIL_C_
 void putchar(char c) {
+    kick_wdt();
     while (!TI);
     TI = 0;
     SBUF = c;

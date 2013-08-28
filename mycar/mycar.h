@@ -23,9 +23,14 @@
 void kick_wdt(void);
 void wdt_init(void);
 
-void mdelay(u16 ms);
-
 /* work */
 #include "queue.h"
 
 #include <stdio.h>
+
+/* for i2c */
+#define SDA P1_1
+#define SCL P1_0
+
+void init_mpu6050(void);
+u16 mpu6050_get_data(u8 reg);
