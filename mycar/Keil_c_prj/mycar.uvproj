@@ -357,11 +357,6 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\delay.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\main.c</FilePath>
@@ -395,6 +390,16 @@
               <FileName>work.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\work.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c-bitbang.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\i2c-bitbang.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mpu6050.c</FilePath>
             </File>
           </Files>
         </Group>
