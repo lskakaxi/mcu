@@ -9,7 +9,7 @@ bit first_time = 1;
 static void schedule(void);
 void tick(void)
 {
-    P1_7 = !P1_7;
+    kick_wdt();
     jiffies++;
     schedule();
 }
